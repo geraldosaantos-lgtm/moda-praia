@@ -13,7 +13,7 @@ import {
   Sparkles,
   User,
 } from 'lucide-react';
-import type { Product, SaleItem, Sale } from '../types';
+import type { Product, SaleItem, Sale, CompanySettings } from '../types';
 
 interface PointOfSaleModalProps {
   isOpen: boolean;
@@ -21,6 +21,7 @@ interface PointOfSaleModalProps {
   products: Product[];
   currentUserName: string;
   initialProduct?: Product | null;
+  companySettings?: CompanySettings;
   onCompleteSale: (saleData: {
     items: SaleItem[];
     customerName: string;
@@ -36,6 +37,7 @@ export const PointOfSaleModal: React.FC<PointOfSaleModalProps> = ({
   products,
   currentUserName,
   initialProduct,
+  companySettings,
   onCompleteSale,
 }) => {
   const [selectedProductId, setSelectedProductId] = useState<string>(
@@ -185,7 +187,41 @@ export const PointOfSaleModal: React.FC<PointOfSaleModalProps> = ({
               Estoque baixado automaticamente e lançamento financeiro registrado na categoria de Vendas.
             </p>
 
-            <div className="max-w-sm mx-auto bg-slate-50 p-4 rounded-xl border border-slate-200 text-left font-mono text-xs space-y-2">
+            <div className="max-w-sm mx-auto bg-slate-50 p-5 rounded-2xl border border-slate-200 text-left font-mono text-xs space-y-2.5 shadow-xs">
+              {/* Receipt Company Header */}
+              <div className="text-center border-b border-dashed border-slate-300 pb-3 space-y-1">
+                {companySettings?.logoUrl && (
+                  <img
+                    src={companySettings.logoUrl}
+                    alt={companySettings.name}
+                    className="w-12 h-12 object-contain mx-auto mb-1"
+                  />
+                )}
+                <div className="font-bold text-sm text-slate-900 tracking-tight">
+                  {companySettings?.name || 'Aura Moda'}
+                </div>
+                {companySettings?.segment && (
+                  <div className="text-[10px] text-slate-500 uppercase tracking-wider">
+                    {companySettings.segment}
+                  </div>
+                )}
+                {companySettings?.cnpj && (
+                  <div className="text-[10px] text-slate-600">
+                    CNPJ/CPF: {companySettings.cnpj}
+                  </div>
+                )}
+                {companySettings?.phone && (
+                  <div className="text-[10px] text-slate-600">
+                    WhatsApp: {companySettings.phone}
+                  </div>
+                )}
+                {companySettings?.address && (
+                  <div className="text-[10px] text-slate-500">
+                    {companySettings.address}
+                  </div>
+                )}
+              </div>
+
               <div className="flex justify-between border-b border-slate-200 pb-2 font-bold text-slate-800">
                 <span>Comprovante #{completedSale.code}</span>
                 <span className="capitalize">{completedSale.paymentMethod}</span>
@@ -204,8 +240,20 @@ export const PointOfSaleModal: React.FC<PointOfSaleModalProps> = ({
                 ))}
               </div>
               <div className="border-t border-slate-300 pt-2 flex justify-between font-bold text-sm text-slate-900">
-                <span>TOTAL:</span>
+                <span>TOTAL PAGO:</span>
                 <span>R$ {completedSale.totalAmount.toFixed(2)}</span>
+              </div>
+
+              {companySettings?.pixKey && completedSale.paymentMethod === 'pix' && (
+                <div className="bg-emerald-50 text-emerald-800 p-2 rounded-lg text-[10px] space-y-0.5">
+                  <span className="font-bold block">Chave PIX da Loja:</span>
+                  <span className="font-mono break-all">{companySettings.pixKey}</span>
+                </div>
+              )}
+
+              {/* Receipt Footer Message */}
+              <div className="border-t border-dashed border-slate-300 pt-2.5 text-center text-[10px] text-slate-500 italic">
+                {companySettings?.receiptMessage || 'Obrigada pela preferência! Volte sempre.'}
               </div>
             </div>
 

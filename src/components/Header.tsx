@@ -9,52 +9,82 @@ import {
   Menu,
   X,
   ChevronDown,
+  Building2,
 } from 'lucide-react';
-import type { UserRole, User as UserType } from '../types';
+import type { UserRole, User as UserType, CompanySettings } from '../types';
 
 interface HeaderProps {
   currentUser: UserType;
+  companySettings: CompanySettings;
   onSwitchUser: (role: UserRole) => void;
   onOpenPOS: () => void;
   onOpenNewProduct: () => void;
   onOpenSupabaseModal: () => void;
+  onOpenCompanySettings: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   currentUser,
+  companySettings,
   onSwitchUser,
   onOpenPOS,
   onOpenNewProduct,
   onOpenSupabaseModal,
+  onOpenCompanySettings,
 }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const isAdmin = currentUser.role === 'admin';
+  const brandInitial = (companySettings.name || 'M').charAt(0).toUpperCase();
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-rose-500 to-amber-500 flex items-center justify-center text-white font-serif font-bold text-xl shadow-xs">
-            A
-          </div>
+        <div 
+          onClick={onOpenCompanySettings}
+          className="flex items-center gap-3 cursor-pointer group"
+          title="Clique para editar dados da empresa e logotipo"
+        >
+          {companySettings.logoUrl ? (
+            <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-0.5 overflow-hidden shadow-2xs flex items-center justify-center shrink-0 group-hover:border-rose-300 transition-colors">
+              <img
+                src={companySettings.logoUrl}
+                alt={companySettings.name}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-rose-500 to-amber-500 flex items-center justify-center text-white font-serif font-bold text-xl shadow-xs group-hover:scale-105 transition-transform shrink-0">
+              {brandInitial}
+            </div>
+          )}
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-editorial text-xl font-bold tracking-tight text-slate-900">
-                Aura Moda
+              <span className="font-editorial text-lg sm:text-xl font-bold tracking-tight text-slate-900 group-hover:text-rose-600 transition-colors">
+                {companySettings.name || 'Minha Loja'}
               </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-50 text-rose-700">
-                Beach & Intimates
+              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 hidden sm:inline-block">
+                {companySettings.segment || 'Moda Praia & Íntima'}
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 -mt-0.5 font-sans hidden sm:block">
-              Gestão Segura, Precificação & IA Comercial
+            <p className="text-[10px] text-slate-400 -mt-0.5 font-sans hidden md:block">
+              {companySettings.phone ? `WhatsApp: ${companySettings.phone}` : 'Gestão Comercial, Precificação & PDV'}
             </p>
           </div>
         </div>
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Company Data Button */}
+          <button
+            onClick={onOpenCompanySettings}
+            className="px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-rose-700 bg-slate-100 hover:bg-rose-50 rounded-lg transition-colors flex items-center gap-1.5 border border-slate-200"
+            title="Configurar Dados da Empresa, Logotipo e Limpeza de Dados"
+          >
+            <Building2 className="w-3.5 h-3.5 text-rose-600" />
+            <span className="hidden sm:inline">Empresa</span>
+          </button>
+
           {/* Supabase & Infra Button */}
           <button
             onClick={onOpenSupabaseModal}
@@ -62,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="Ver Script Supabase, Deploy e Segurança"
           >
             <Database className="w-3.5 h-3.5 text-emerald-600" />
-            <span className="hidden md:inline">Supabase & Cloud</span>
+            <span className="hidden lg:inline">Supabase</span>
           </button>
 
           {/* Quick Sale / PDV Button */}
@@ -156,6 +186,19 @@ export const Header: React.FC<HeaderProps> = ({
                       )}
                     </button>
                   </div>
+                </div>
+
+                <div className="px-4 py-2 border-t border-slate-100">
+                  <button
+                    onClick={() => {
+                      onOpenCompanySettings();
+                      setIsUserMenuOpen(false);
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 rounded-md text-xs font-medium text-rose-700 hover:bg-rose-50 flex items-center gap-1.5 transition-colors"
+                  >
+                    <Building2 className="w-3.5 h-3.5" />
+                    <span>Configurar Empresa & Logo</span>
+                  </button>
                 </div>
               </div>
             )}

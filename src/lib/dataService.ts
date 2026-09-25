@@ -5,6 +5,11 @@ import {
   INITIAL_SALES,
   INITIAL_GOALS,
   INITIAL_COMBOS,
+  DEFAULT_COMPANY_SETTINGS,
+  DEMO_PRODUCTS,
+  DEMO_FINANCIALS,
+  DEMO_SALES,
+  DEMO_COMBOS,
 } from './initialData';
 import type {
   Product,
@@ -13,6 +18,7 @@ import type {
   SalesGoal,
   BusinessAnalytics,
   PriceAuditAlert,
+  CompanySettings,
 } from '../types';
 
 const getSb = (): any => getSupabase();
@@ -22,6 +28,8 @@ const STORAGE_KEYS = {
   FINANCIALS: 'AURA_FINANCIALS',
   SALES: 'AURA_SALES',
   GOALS: 'AURA_GOALS',
+  COMPANY: 'AURA_COMPANY_SETTINGS',
+  CLEAN_INITIALIZED: 'AURA_STORE_CLEAN_V2',
 };
 
 // Safe localStorage helpers
@@ -45,6 +53,92 @@ function setStored<T>(key: string, value: T): void {
     console.warn(`Error saving ${key} to localStorage:`, e);
   }
 }
+
+// Limpa dados legados de teste na primeira carga para garantir tela limpa
+function ensureCleanStateOnFirstLoad() {
+  if (typeof window === 'undefined') return;
+  const isCleaned = localStorage.getItem(STORAGE_KEYS.CLEAN_INITIALIZED);
+  if (!isCleaned) {
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.FINANCIALS, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.SALES, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.GOALS, JSON.stringify(INITIAL_GOALS));
+    localStorage.setItem(STORAGE_KEYS.CLEAN_INITIALIZED, 'true');
+  }
+}
+
+ensureCleanStateOnFirstLoad();
+
+// ======================== COMPANY SETTINGS ========================
+export async function fetchCompanySettings(): Promise<CompanySettings> {
+  const cached = getStored<CompanySettings | null>(STORAGE_KEYS.COMPANY, null);
+  if (cached && cached.name) {
+    return cached;
+  }
+
+  try {
+    const res = await fetch('/api/company');
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && contentType.includes('application/json')) {
+      const json = await res.json();
+      if (json && json.company) {
+        setStored(STORAGE_KEYS.COMPANY, json.company);
+        return json.company;
+      }
+    }
+  } catch {
+    // Vercel / offline fallback
+  }
+
+  setStored(STORAGE_KEYS.COMPANY, DEFAULT_COMPANY_SETTINGS);
+  return DEFAULT_COMPANY_SETTINGS;
+}
+
+export async function saveCompanySettings(settings: CompanySettings): Promise<CompanySettings> {
+  setStored(STORAGE_KEYS.COMPANY, settings);
+  try {
+    await fetch('/api/company', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company: settings }),
+    });
+  } catch {
+    // Non-blocking
+  }
+  return settings;
+}
+
+export async function resetAllTestData(): Promise<void> {
+  setStored(STORAGE_KEYS.PRODUCTS, []);
+  setStored(STORAGE_KEYS.FINANCIALS, []);
+  setStored(STORAGE_KEYS.SALES, []);
+  setStored(STORAGE_KEYS.GOALS, INITIAL_GOALS);
+  setStored(STORAGE_KEYS.CLEAN_INITIALIZED, 'true');
+
+  try {
+    await fetch('/api/reset-data', { method: 'POST' });
+  } catch {
+    // Non-blocking
+  }
+}
+
+export async function loadDemoData(): Promise<void> {
+  setStored(STORAGE_KEYS.PRODUCTS, DEMO_PRODUCTS);
+  setStored(STORAGE_KEYS.FINANCIALS, DEMO_FINANCIALS);
+  setStored(STORAGE_KEYS.SALES, DEMO_SALES);
+  setStored(STORAGE_KEYS.GOALS, {
+    day: { id: 'goal-day', period: 'dia', targetAmount: 800, currentAmount: 469.7, targetTicket: 180, currentTicket: 234.85, totalSalesCount: 2 },
+    week: { id: 'goal-week', period: 'semana', targetAmount: 5000, currentAmount: 3680, targetTicket: 180, currentTicket: 193.68, totalSalesCount: 19 },
+    month: { id: 'goal-month', period: 'mes', targetAmount: 22000, currentAmount: 16840, targetTicket: 185, currentTicket: 191.36, totalSalesCount: 88 },
+  });
+
+  try {
+    await fetch('/api/seed-demo', { method: 'POST' });
+  } catch {
+    // Non-blocking
+  }
+}
+
 
 // ======================== PRODUCTS ========================
 export async function fetchProducts(): Promise<Product[]> {
@@ -163,13 +257,13 @@ export async function fetchProducts(): Promise<Product[]> {
     // Expected on static deployments like Vercel
   }
 
-  // 3. Fallback to localStorage or Initial Demo Catalog
-  const cached = getStored<Product[]>(STORAGE_KEYS.PRODUCTS, []);
-  if (cached && cached.length > 0) {
+  // 3. Fallback to localStorage or Initial Clean State
+  const cached = getStored<Product[] | null>(STORAGE_KEYS.PRODUCTS, null);
+  if (cached !== null && Array.isArray(cached)) {
     return cached;
   }
 
-  // Initialize with complete initial dataset
+  // Initialize with clean empty dataset
   setStored(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
   return INITIAL_PRODUCTS;
 }
@@ -369,8 +463,8 @@ export async function fetchFinancials(): Promise<FinancialTransaction[]> {
     // Vercel static fallback
   }
 
-  const cached = getStored<FinancialTransaction[]>(STORAGE_KEYS.FINANCIALS, []);
-  if (cached && cached.length > 0) {
+  const cached = getStored<FinancialTransaction[] | null>(STORAGE_KEYS.FINANCIALS, null);
+  if (cached !== null && Array.isArray(cached)) {
     return cached;
   }
 
@@ -568,8 +662,8 @@ export async function fetchSales(): Promise<Sale[]> {
     // Vercel static fallback
   }
 
-  const cached = getStored<Sale[]>(STORAGE_KEYS.SALES, []);
-  if (cached && cached.length > 0) {
+  const cached = getStored<Sale[] | null>(STORAGE_KEYS.SALES, null);
+  if (cached !== null && Array.isArray(cached)) {
     return cached;
   }
 
@@ -740,8 +834,29 @@ export function calculateAnalytics(
     .filter((p) => p.totalStock > 0 && (p.daysWithoutSale >= 30 || (p.salesCount <= 5 && p.totalStock >= 10)))
     .sort((a, b) => b.daysWithoutSale - a.daysWithoutSale);
 
-  // Combos
-  const combos = INITIAL_COMBOS;
+  // Combos: se tiver menos de 2 produtos cadastrados, retorna vazio
+  const combos: ComboSuggestion[] = [];
+  if (products.length >= 2) {
+    // Sugestão automática básica baseada em categorias diferentes se houver
+    const p1 = products[0];
+    const p2 = products[1];
+    if (p1 && p2) {
+      const orig = Number((p1.pricing.calculatedCashPrice + p2.pricing.calculatedCashPrice).toFixed(2));
+      const comboPr = Number((orig * 0.9).toFixed(2));
+      combos.push({
+        id: `combo-${p1.id}-${p2.id}`,
+        title: `Combo Especial: ${p1.name} + ${p2.name}`,
+        category: 'Combo Inteligente',
+        productIds: [p1.id, p2.id],
+        productNames: [p1.name, p2.name],
+        originalTotal: orig,
+        comboPrice: comboPr,
+        discountPercent: 10,
+        estimatedMarginPercent: Number((((comboPr - (p1.costs.totalCost + p2.costs.totalCost)) / comboPr) * 100).toFixed(1)),
+        strategicReason: 'Eleva o ticket médio combinando duas peças do catálogo com 10% de desconto atrativo.',
+      });
+    }
+  }
 
   // Price Audits
   const priceAudits: PriceAuditAlert[] = [];
@@ -819,11 +934,22 @@ export function calculateAnalytics(
   const totalSalesRevenue = sales.reduce((acc, s) => acc + s.totalAmount, 0);
   const averageTicket = sales.length > 0 ? totalSalesRevenue / sales.length : 0;
 
+  // Atualiza currentAmount das metas com base nas vendas reais
+  const activeGoals = {
+    ...goals,
+    month: {
+      ...goals.month,
+      currentAmount: Number(totalSalesRevenue.toFixed(2)),
+      currentTicket: Number(averageTicket.toFixed(2)),
+      totalSalesCount: sales.length,
+    },
+  };
+
   return {
     bestSellers,
     deadStock,
     combos,
-    goals,
+    goals: activeGoals,
     priceAudits,
     summary: {
       totalInventoryValueCost: Number(totalInventoryValueCost.toFixed(2)),
@@ -831,7 +957,7 @@ export function calculateAnalytics(
       potentialProfit: Number(potentialProfit.toFixed(2)),
       stagnantCapital: Number(stagnantCapital.toFixed(2)),
       averageTicket: Number(averageTicket.toFixed(2)),
-      monthlySalesTotal: goals.month.currentAmount,
+      monthlySalesTotal: Number(totalSalesRevenue.toFixed(2)),
     },
   };
 }

@@ -11,12 +11,13 @@ import {
   CheckCircle2,
   AlertTriangle,
 } from 'lucide-react';
-import type { BusinessAnalytics, Sale, Product, UserRole } from '../types';
+import type { BusinessAnalytics, Sale, Product, UserRole, CompanySettings } from '../types';
 
 interface DashboardOverviewProps {
   analytics: BusinessAnalytics | null;
   sales: Sale[];
   userRole: UserRole;
+  companySettings?: CompanySettings;
   onNavigateTab: (tab: 'catalog' | 'financials' | 'ai' | 'pos') => void;
   onOpenNewProduct: () => void;
   onOpenPOS: () => void;
@@ -26,6 +27,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   analytics,
   sales,
   userRole,
+  companySettings,
   onNavigateTab,
   onOpenNewProduct,
   onOpenPOS,
@@ -34,10 +36,11 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
 
   if (!analytics) return null;
 
-  const monthProgress = Math.min(
-    100,
-    Math.round((analytics.summary.monthlySalesTotal / analytics.goals.month.targetAmount) * 100)
-  );
+  const targetMonth = analytics.goals.month?.targetAmount || 1;
+  const monthProgress =
+    targetMonth > 0
+      ? Math.min(100, Math.round((analytics.summary.monthlySalesTotal / targetMonth) * 100))
+      : 0;
 
   return (
     <div className="space-y-6">
@@ -49,10 +52,10 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
             <span>Sistema Inteligente de Gestão & Varejo</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold font-editorial tracking-tight text-white">
-            Painel Executivo Aura Moda
+            Painel Executivo {companySettings?.name || 'Aura Moda'}
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-            Controle seguro para sua boutique de moda praia e lingerie: precificação matemática com margem de segurança, fluxo financeiro e IA preditiva de vendas.
+            Controle seguro para sua boutique: precificação matemática com margem de segurança, fluxo financeiro integrado e IA preditiva de vendas.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -192,35 +195,47 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
           </div>
 
           <div className="space-y-3">
-            {analytics.bestSellers.slice(0, 3).map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"
-              >
-                <div className="flex items-center gap-3">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="w-11 h-11 rounded-lg object-cover"
-                  />
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-800">{item.name}</h4>
-                    <span className="text-[11px] text-slate-400 font-mono">
-                      SKU: {item.sku} · {item.totalStock} un em estoque
+            {analytics.bestSellers.length === 0 ? (
+              <div className="py-8 text-center text-xs text-slate-400 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                <p>Nenhuma peça com vendas registradas ainda.</p>
+                <button
+                  onClick={() => onNavigateTab('catalog')}
+                  className="mt-1.5 text-xs text-rose-600 hover:text-rose-700 font-semibold inline-block"
+                >
+                  Cadastrar peças no catálogo
+                </button>
+              </div>
+            ) : (
+              analytics.bestSellers.slice(0, 3).map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={item.imageUrl || 'https://images.unsplash.com/photo-1582639510494-c80b5de9f148?w=500&auto=format&fit=crop&q=80'}
+                      alt={item.name}
+                      className="w-11 h-11 rounded-lg object-cover"
+                    />
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-800">{item.name}</h4>
+                      <span className="text-[11px] text-slate-400 font-mono">
+                        SKU: {item.sku} · {item.totalStock} un em estoque
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-slate-900 font-editorial block">
+                      R$ {item.pricing.calculatedCashPrice.toFixed(2)}
+                    </span>
+                    <span className="text-[10px] text-emerald-600 font-semibold">
+                      {item.salesCount} vendidas
                     </span>
                   </div>
                 </div>
-
-                <div className="text-right">
-                  <span className="text-xs font-bold text-slate-900 font-editorial block">
-                    R$ {item.pricing.calculatedCashPrice.toFixed(2)}
-                  </span>
-                  <span className="text-[10px] text-emerald-600 font-semibold">
-                    {item.salesCount} vendidas
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -244,33 +259,45 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
           </div>
 
           <div className="space-y-3">
-            {sales.slice(0, 3).map((sale) => (
-              <div
-                key={sale.id}
-                className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between"
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs text-slate-800">#{sale.code}</span>
-                    <span className="text-[10px] uppercase font-mono text-slate-400">
-                      {sale.paymentMethod}
+            {sales.length === 0 ? (
+              <div className="py-8 text-center text-xs text-slate-400 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                <p>Nenhuma venda registrada ainda no caixa.</p>
+                <button
+                  onClick={onOpenPOS}
+                  className="mt-1.5 text-xs text-rose-600 hover:text-rose-700 font-semibold inline-block"
+                >
+                  Abrir PDV para registrar venda
+                </button>
+              </div>
+            ) : (
+              sales.slice(0, 3).map((sale) => (
+                <div
+                  key={sale.id}
+                  className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between"
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-xs text-slate-800">#{sale.code}</span>
+                      <span className="text-[10px] uppercase font-mono text-slate-400">
+                        {sale.paymentMethod}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500">
+                      {sale.customerName} · {sale.items.length} produto(s)
+                    </p>
+                  </div>
+
+                  <div className="text-right">
+                    <span className="font-bold text-sm text-slate-900 font-editorial block">
+                      R$ {sale.totalAmount.toFixed(2)}
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      Atendente: {sale.sellerName}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-500">
-                    {sale.customerName} · {sale.items.length} produto(s)
-                  </p>
                 </div>
-
-                <div className="text-right">
-                  <span className="font-bold text-sm text-slate-900 font-editorial block">
-                    R$ {sale.totalAmount.toFixed(2)}
-                  </span>
-                  <span className="text-[10px] text-slate-400">
-                    Atendente: {sale.sellerName}
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

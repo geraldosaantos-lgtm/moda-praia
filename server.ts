@@ -12,6 +12,7 @@ import type {
   BusinessAnalytics,
   ComboSuggestion,
   PriceAuditAlert,
+  CompanySettings,
 } from './src/types.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -604,6 +605,7 @@ const initialGoals = {
 
 // Store interface
 interface StoreData {
+  company?: CompanySettings;
   users: User[];
   products: Product[];
   financials: FinancialTransaction[];
@@ -618,6 +620,11 @@ interface StoreData {
 
 // In-memory store with file sync
 let store: StoreData = {
+  company: {
+    name: 'Minha Marca',
+    segment: 'Moda Praia & Vestuário',
+    receiptMessage: 'Agradecemos a sua preferência! Trocas em até 15 dias com a etiqueta fixada na peça.',
+  },
   users: initialUsers,
   products: initialProducts,
   financials: initialFinancials,
@@ -828,6 +835,40 @@ function calculateAnalytics(): BusinessAnalytics {
     },
   };
 }
+
+// ===================== COMPANY SETTINGS ROUTES =====================
+app.get('/api/company', (_req: Request, res: Response) => {
+  const defaultCompany: CompanySettings = {
+    name: 'Minha Marca',
+    segment: 'Moda Praia & Vestuário',
+    receiptMessage: 'Agradecemos a sua preferência! Trocas em até 15 dias com a etiqueta fixada na peça.',
+  };
+  res.json({ company: store.company || defaultCompany });
+});
+
+app.post('/api/company', (req: Request, res: Response) => {
+  const { company } = req.body;
+  if (!company || typeof company !== 'object') {
+    return res.status(400).json({ error: 'Dados da empresa são obrigatórios' });
+  }
+  store.company = company;
+  saveStore();
+  res.json({ success: true, company: store.company });
+});
+
+// ===================== RESET / CLEAN DATA ROUTE =====================
+app.post('/api/reset-data', (_req: Request, res: Response) => {
+  store.products = [];
+  store.financials = [];
+  store.sales = [];
+  store.goals = {
+    day: { id: 'goal-day', period: 'dia', targetAmount: 1000, currentAmount: 0, targetTicket: 150, currentTicket: 0, totalSalesCount: 0 },
+    week: { id: 'goal-week', period: 'semana', targetAmount: 6000, currentAmount: 0, targetTicket: 150, currentTicket: 0, totalSalesCount: 0 },
+    month: { id: 'goal-month', period: 'mes', targetAmount: 25000, currentAmount: 0, targetTicket: 150, currentTicket: 0, totalSalesCount: 0 },
+  };
+  saveStore();
+  res.json({ success: true, message: 'Dados de teste removidos com sucesso!' });
+});
 
 // ===================== AUTH ROUTES =====================
 app.post('/api/auth/login', (req: Request, res: Response) => {

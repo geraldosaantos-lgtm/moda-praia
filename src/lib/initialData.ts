@@ -1,4 +1,18 @@
-import type { Product, FinancialTransaction, Sale, SalesGoal, User, ComboSuggestion } from '../types';
+import type { Product, FinancialTransaction, Sale, SalesGoal, User, ComboSuggestion, CompanySettings } from '../types';
+
+export const DEFAULT_COMPANY_SETTINGS: CompanySettings = {
+  name: 'Minha Marca',
+  corporateName: '',
+  cnpj: '',
+  phone: '',
+  email: '',
+  instagram: '',
+  address: '',
+  logoUrl: '',
+  pixKey: '',
+  segment: 'Moda Praia & Vestuário',
+  receiptMessage: 'Agradecemos a sua preferência! Trocas em até 15 dias com a etiqueta fixada na peça.',
+};
 
 export const INITIAL_USERS: User[] = [
   {
@@ -17,7 +31,11 @@ export const INITIAL_USERS: User[] = [
   },
 ];
 
-export const INITIAL_PRODUCTS: Product[] = [
+// Base limpa inicial (0 produtos de teste)
+export const INITIAL_PRODUCTS: Product[] = [];
+
+// Catálogo de demonstração caso o usuário queira carregar exemplos
+export const DEMO_PRODUCTS: Product[] = [
   {
     id: 'prod-001',
     sku: 'PRAIA-BIQ-2026-01',
@@ -311,7 +329,11 @@ export const INITIAL_PRODUCTS: Product[] = [
   },
 ];
 
-export const INITIAL_FINANCIALS: FinancialTransaction[] = [
+// Lançamentos limpos iniciais (0 registros)
+export const INITIAL_FINANCIALS: FinancialTransaction[] = [];
+
+// Lançamentos para demonstração caso solicitado
+export const DEMO_FINANCIALS: FinancialTransaction[] = [
   {
     id: 'fin-001',
     type: 'despesa',
@@ -415,7 +437,11 @@ export const INITIAL_FINANCIALS: FinancialTransaction[] = [
   },
 ];
 
-export const INITIAL_SALES: Sale[] = [
+// Vendas limpas iniciais (0 registros)
+export const INITIAL_SALES: Sale[] = [];
+
+// Vendas para demonstração caso solicitado
+export const DEMO_SALES: Sale[] = [
   {
     id: 'sale-001',
     code: 'VND-1047',
@@ -533,33 +559,35 @@ export const INITIAL_GOALS: { day: SalesGoal; week: SalesGoal; month: SalesGoal 
   day: {
     id: 'goal-day',
     period: 'dia',
-    targetAmount: 800,
-    currentAmount: 469.7,
-    targetTicket: 180,
-    currentTicket: 234.85,
-    totalSalesCount: 2,
+    targetAmount: 1000,
+    currentAmount: 0,
+    targetTicket: 150,
+    currentTicket: 0,
+    totalSalesCount: 0,
   },
   week: {
     id: 'goal-week',
     period: 'semana',
-    targetAmount: 5000,
-    currentAmount: 3680,
-    targetTicket: 180,
-    currentTicket: 193.68,
-    totalSalesCount: 19,
+    targetAmount: 6000,
+    currentAmount: 0,
+    targetTicket: 150,
+    currentTicket: 0,
+    totalSalesCount: 0,
   },
   month: {
     id: 'goal-month',
     period: 'mes',
-    targetAmount: 22000,
-    currentAmount: 16840,
-    targetTicket: 185,
-    currentTicket: 191.36,
-    totalSalesCount: 88,
+    targetAmount: 25000,
+    currentAmount: 0,
+    targetTicket: 150,
+    currentTicket: 0,
+    totalSalesCount: 0,
   },
 };
 
-export const INITIAL_COMBOS: ComboSuggestion[] = [
+export const INITIAL_COMBOS: ComboSuggestion[] = [];
+
+export const DEMO_COMBOS: ComboSuggestion[] = [
   {
     id: 'combo-001',
     title: 'Combo Sunset Beach Club',
@@ -600,3 +628,4 @@ export const INITIAL_COMBOS: ComboSuggestion[] = [
       'Acelera a saída da Hot Pant que está parada há 67 dias liberando R$ 864 em capital de giro sem gerar prejuízo.',
   },
 ];
+

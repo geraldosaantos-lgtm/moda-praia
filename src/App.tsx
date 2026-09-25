@@ -18,11 +18,16 @@ import type {
   User,
   UserRole,
   ComboSuggestion,
+  CompanySettings,
 } from './types';
 import {
   fetchProducts,
   fetchFinancials,
   fetchSales,
+  fetchCompanySettings,
+  saveCompanySettings,
+  resetAllTestData,
+  loadDemoData,
   calculateAnalytics,
   saveProduct,
   deleteProduct,
@@ -32,6 +37,7 @@ import {
   createSale,
   updateGoals,
 } from './lib/dataService';
+import { DEFAULT_COMPANY_SETTINGS } from './lib/initialData';
 import { Header } from './components/Header';
 import { DashboardOverview } from './components/DashboardOverview';
 import { ProductsCatalog } from './components/ProductsCatalog';
@@ -40,6 +46,7 @@ import { AISalesPlanner } from './components/AISalesPlanner';
 import { ProductFormModal } from './components/ProductFormModal';
 import { PointOfSaleModal } from './components/PointOfSaleModal';
 import { SupabaseAndSecurityModal } from './components/SupabaseAndSecurityModal';
+import { CompanySettingsModal } from './components/CompanySettingsModal';
 
 type NavTab = 'dashboard' | 'catalog' | 'financials' | 'ai';
 
@@ -68,20 +75,24 @@ export default function App() {
   const [posInitialProduct, setPosInitialProduct] = useState<Product | null>(null);
 
   const [isSupabaseModalOpen, setIsSupabaseModalOpen] = useState(false);
+  const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
+  const [companySettings, setCompanySettings] = useState<CompanySettings>(DEFAULT_COMPANY_SETTINGS);
 
   // Fetch initial data
   const fetchData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const [fetchedProducts, fetchedFinancials, fetchedSales] = await Promise.all([
+      const [fetchedProducts, fetchedFinancials, fetchedSales, fetchedCompany] = await Promise.all([
         fetchProducts(),
         fetchFinancials(),
         fetchSales(),
+        fetchCompanySettings(),
       ]);
 
       setProducts(fetchedProducts);
       setFinancials(fetchedFinancials);
       setSales(fetchedSales);
+      setCompanySettings(fetchedCompany);
 
       const computedAnalytics = calculateAnalytics(fetchedProducts, fetchedSales);
       setAnalytics(computedAnalytics);
@@ -170,11 +181,28 @@ export default function App() {
     setIsPOSOpen(true);
   };
 
+  // Company Settings Handlers
+  const handleSaveCompanySettings = async (newSettings: CompanySettings) => {
+    await saveCompanySettings(newSettings);
+    setCompanySettings(newSettings);
+  };
+
+  const handleResetAllData = async () => {
+    await resetAllTestData();
+    await fetchData();
+  };
+
+  const handleLoadDemoData = async () => {
+    await loadDemoData();
+    await fetchData();
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-900 pb-20 md:pb-10 font-sans">
       {/* Top Application Header */}
       <Header
         currentUser={currentUser}
+        companySettings={companySettings}
         onSwitchUser={handleSwitchUser}
         onOpenPOS={() => {
           setPosInitialProduct(null);
@@ -185,6 +213,7 @@ export default function App() {
           setIsProductModalOpen(true);
         }}
         onOpenSupabaseModal={() => setIsSupabaseModalOpen(true)}
+        onOpenCompanySettings={() => setIsCompanyModalOpen(true)}
       />
 
       {/* Main Container */}
@@ -257,6 +286,7 @@ export default function App() {
             analytics={analytics}
             sales={sales}
             userRole={currentUser.role}
+            companySettings={companySettings}
             onNavigateTab={(tab) => {
               if (tab === 'pos') {
                 setPosInitialProduct(null);
@@ -390,6 +420,7 @@ export default function App() {
         products={products}
         currentUserName={currentUser.name}
         initialProduct={posInitialProduct}
+        companySettings={companySettings}
         onCompleteSale={handleCompleteSale}
       />
 
@@ -397,6 +428,16 @@ export default function App() {
       <SupabaseAndSecurityModal
         isOpen={isSupabaseModalOpen}
         onClose={() => setIsSupabaseModalOpen(false)}
+      />
+
+      {/* Company Settings & Identity Modal */}
+      <CompanySettingsModal
+        isOpen={isCompanyModalOpen}
+        onClose={() => setIsCompanyModalOpen(false)}
+        companySettings={companySettings}
+        onSaveSettings={handleSaveCompanySettings}
+        onResetAllData={handleResetAllData}
+        onLoadDemoData={handleLoadDemoData}
       />
     </div>
   );

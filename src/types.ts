@@ -164,3 +164,16 @@ export interface BusinessAnalytics {
     monthlySalesTotal: number;
   };
 }
+export interface CompanySettings {
+  name: string;
+  corporateName?: string;
+  cnpj?: string;
+  phone?: string;
+  email?: string;
+  instagram?: string;
+  address?: string;
+  logoUrl?: string;
+  pixKey?: string;
+  segment?: string;
+  receiptMessage?: string;
+}
