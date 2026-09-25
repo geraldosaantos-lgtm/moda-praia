@@ -1,0 +1,618 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-1",
+      "name": "Helena Castro",
+      "email": "admin@auramoda.com.br",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "usr-seller-1",
+      "name": "Camila Rocha",
+      "email": "vendedor@auramoda.com.br",
+      "role": "vendedor",
+      "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-001",
+      "sku": "PRAIA-BIQ-2026-01",
+      "name": "Biquíni Cortininha Ripple Solar",
+      "category": "moda_praia",
+      "description": "Top cortininha com babadinho levanta-bumbum em tecido canelado acetinado com proteção UV50+.",
+      "color": "Terracota / Dourado",
+      "sizes": [
+        {
+          "size": "P",
+          "quantity": 8
+        },
+        {
+          "size": "M",
+          "quantity": 14
+        },
+        {
+          "size": "G",
+          "quantity": 6
+        }
+      ],
+      "totalStock": 28,
+      "minStockAlert": 8,
+      "costs": {
+        "itemCost": 38,
+        "supplierShipping": 3.5,
+        "packagingCost": 2.5,
+        "otherCosts": 1,
+        "totalCost": 45
+      },
+      "pricing": {
+        "cashMarkupPercent": 144.2,
+        "installmentMarkupPercent": 12,
+        "maxInstallments": 3,
+        "calculatedCashPrice": 109.9,
+        "calculatedInstallmentPrice": 123,
+        "calculatedInstallmentValue": 41,
+        "cashGrossProfit": 64.9,
+        "cashMarginPercent": 59.05
+      },
+      "salesCount": 42,
+      "lastSaleDate": "2026-09-22",
+      "daysWithoutSale": 1,
+      "createdAt": "2026-08-10",
+      "imageUrl": "https://images.unsplash.com/photo-1582639510494-c80b5de9f148?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-002",
+      "sku": "PRAIA-MAI-2026-02",
+      "name": "Maiô Sunset Cavado com Cinto",
+      "category": "moda_praia",
+      "description": "Maiô elegante com decote em V, cinto embutido e fivela resinada dourada anti-oxidação.",
+      "color": "Verde Oliva",
+      "sizes": [
+        {
+          "size": "M",
+          "quantity": 10
+        },
+        {
+          "size": "G",
+          "quantity": 7
+        },
+        {
+          "size": "GG",
+          "quantity": 4
+        }
+      ],
+      "totalStock": 21,
+      "minStockAlert": 6,
+      "costs": {
+        "itemCost": 62,
+        "supplierShipping": 4,
+        "packagingCost": 3,
+        "otherCosts": 2,
+        "totalCost": 71
+      },
+      "pricing": {
+        "cashMarkupPercent": 139.3,
+        "installmentMarkupPercent": 11.5,
+        "maxInstallments": 4,
+        "calculatedCashPrice": 169.9,
+        "calculatedInstallmentPrice": 189.9,
+        "calculatedInstallmentValue": 47.48,
+        "cashGrossProfit": 98.9,
+        "cashMarginPercent": 58.21
+      },
+      "salesCount": 26,
+      "lastSaleDate": "2026-09-20",
+      "daysWithoutSale": 3,
+      "createdAt": "2026-08-15",
+      "imageUrl": "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-003",
+      "sku": "PRAIA-SAI-2026-03",
+      "name": "Saída de Praia Chemise Rendada",
+      "category": "moda_praia",
+      "description": "Chemise longa em crepe leve com acabamentos em renda e botões de madrepérola.",
+      "color": "Off-White",
+      "sizes": [
+        {
+          "size": "Único",
+          "quantity": 15
+        }
+      ],
+      "totalStock": 15,
+      "minStockAlert": 5,
+      "costs": {
+        "itemCost": 48,
+        "supplierShipping": 3.5,
+        "packagingCost": 2.5,
+        "otherCosts": 1,
+        "totalCost": 55
+      },
+      "pricing": {
+        "cashMarkupPercent": 136.2,
+        "installmentMarkupPercent": 10,
+        "maxInstallments": 3,
+        "calculatedCashPrice": 129.9,
+        "calculatedInstallmentPrice": 142.9,
+        "calculatedInstallmentValue": 47.63,
+        "cashGrossProfit": 74.9,
+        "cashMarginPercent": 57.66
+      },
+      "salesCount": 31,
+      "lastSaleDate": "2026-09-21",
+      "daysWithoutSale": 2,
+      "createdAt": "2026-08-12",
+      "imageUrl": "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-004",
+      "sku": "INT-CONJ-2026-04",
+      "name": "Conjunto Lingerie Renda Sofia",
+      "category": "moda_intima",
+      "description": "Sutiã com aro estruturado em renda floral macia e calcinha fio duplo conforto.",
+      "color": "Preto / Pérola",
+      "sizes": [
+        {
+          "size": "P",
+          "quantity": 9
+        },
+        {
+          "size": "M",
+          "quantity": 16
+        },
+        {
+          "size": "G",
+          "quantity": 12
+        }
+      ],
+      "totalStock": 37,
+      "minStockAlert": 10,
+      "costs": {
+        "itemCost": 34,
+        "supplierShipping": 2.5,
+        "packagingCost": 3.5,
+        "otherCosts": 1,
+        "totalCost": 41
+      },
+      "pricing": {
+        "cashMarkupPercent": 141.2,
+        "installmentMarkupPercent": 10,
+        "maxInstallments": 3,
+        "calculatedCashPrice": 98.9,
+        "calculatedInstallmentPrice": 108.9,
+        "calculatedInstallmentValue": 36.3,
+        "cashGrossProfit": 57.9,
+        "cashMarginPercent": 58.54
+      },
+      "salesCount": 54,
+      "lastSaleDate": "2026-09-23",
+      "daysWithoutSale": 0,
+      "createdAt": "2026-07-28",
+      "imageUrl": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-005",
+      "sku": "INT-ROBE-2026-05",
+      "name": "Robe Acetinado Noite de Seda",
+      "category": "moda_intima",
+      "description": "Robe com toque de seda suave, mangas com detalhes em renda e faixa para amarração na cintura.",
+      "color": "Rosé Nude",
+      "sizes": [
+        {
+          "size": "P/M",
+          "quantity": 6
+        },
+        {
+          "size": "G/GG",
+          "quantity": 5
+        }
+      ],
+      "totalStock": 11,
+      "minStockAlert": 4,
+      "costs": {
+        "itemCost": 46,
+        "supplierShipping": 3,
+        "packagingCost": 3.5,
+        "otherCosts": 1.5,
+        "totalCost": 54
+      },
+      "pricing": {
+        "cashMarkupPercent": 159.1,
+        "installmentMarkupPercent": 10,
+        "maxInstallments": 3,
+        "calculatedCashPrice": 139.9,
+        "calculatedInstallmentPrice": 153.9,
+        "calculatedInstallmentValue": 51.3,
+        "cashGrossProfit": 85.9,
+        "cashMarginPercent": 61.4
+      },
+      "salesCount": 19,
+      "lastSaleDate": "2026-09-18",
+      "daysWithoutSale": 5,
+      "createdAt": "2026-08-01",
+      "imageUrl": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-006",
+      "sku": "INT-KIT-2026-06",
+      "name": "Kit 3 Calcinhas Sem Costura Confort",
+      "category": "moda_intima",
+      "description": "Trio de calcinhas corte a laser que não marcam sob biquínis, vestidos e calças.",
+      "color": "Nude / Preto / Branco",
+      "sizes": [
+        {
+          "size": "P",
+          "quantity": 20
+        },
+        {
+          "size": "M",
+          "quantity": 28
+        },
+        {
+          "size": "G",
+          "quantity": 18
+        }
+      ],
+      "totalStock": 66,
+      "minStockAlert": 15,
+      "costs": {
+        "itemCost": 19.5,
+        "supplierShipping": 1.5,
+        "packagingCost": 2,
+        "otherCosts": 0.5,
+        "totalCost": 23.5
+      },
+      "pricing": {
+        "cashMarkupPercent": 154.9,
+        "installmentMarkupPercent": 8.5,
+        "maxInstallments": 2,
+        "calculatedCashPrice": 59.9,
+        "calculatedInstallmentPrice": 65,
+        "calculatedInstallmentValue": 32.5,
+        "cashGrossProfit": 36.4,
+        "cashMarginPercent": 60.77
+      },
+      "salesCount": 68,
+      "lastSaleDate": "2026-09-23",
+      "daysWithoutSale": 0,
+      "createdAt": "2026-07-15",
+      "imageUrl": "https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-007",
+      "sku": "PRAIA-HOT-2026-07",
+      "name": "Biquíni Hot Pant Neon Sunset",
+      "category": "moda_praia",
+      "description": "Modelo cintura alta vintage com bojo estruturado em tecido neon especial.",
+      "color": "Coral Neon",
+      "sizes": [
+        {
+          "size": "M",
+          "quantity": 9
+        },
+        {
+          "size": "G",
+          "quantity": 7
+        }
+      ],
+      "totalStock": 16,
+      "minStockAlert": 5,
+      "costs": {
+        "itemCost": 47,
+        "supplierShipping": 3.5,
+        "packagingCost": 2.5,
+        "otherCosts": 1,
+        "totalCost": 54
+      },
+      "pricing": {
+        "cashMarkupPercent": 159.1,
+        "installmentMarkupPercent": 10,
+        "maxInstallments": 3,
+        "calculatedCashPrice": 139.9,
+        "calculatedInstallmentPrice": 153.9,
+        "calculatedInstallmentValue": 51.3,
+        "cashGrossProfit": 85.9,
+        "cashMarginPercent": 61.4
+      },
+      "salesCount": 3,
+      "lastSaleDate": "2026-07-18",
+      "daysWithoutSale": 67,
+      "createdAt": "2026-06-20",
+      "imageUrl": "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=500&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "prod-008",
+      "sku": "PRAIA-TOP-2026-08",
+      "name": "Top Faixa Lastex Bojo Removível",
+      "category": "moda_praia",
+      "description": "Top versátil que pode ser usado na praia ou como cropped em looks urbanos.",
+      "color": "Azul Turquesa",
+      "sizes": [
+        {
+          "size": "P",
+          "quantity": 2
+        },
+        {
+          "size": "M",
+          "quantity": 1
+        }
+      ],
+      "totalStock": 3,
+      "minStockAlert": 6,
+      "costs": {
+        "itemCost": 35,
+        "supplierShipping": 3,
+        "packagingCost": 2,
+        "otherCosts": 1,
+        "totalCost": 41
+      },
+      "pricing": {
+        "cashMarkupPercent": 46.1,
+        "installmentMarkupPercent": 8,
+        "maxInstallments": 2,
+        "calculatedCashPrice": 59.9,
+        "calculatedInstallmentPrice": 64.9,
+        "calculatedInstallmentValue": 32.45,
+        "cashGrossProfit": 18.9,
+        "cashMarginPercent": 31.55
+      },
+      "salesCount": 18,
+      "lastSaleDate": "2026-09-15",
+      "daysWithoutSale": 8,
+      "createdAt": "2026-08-05",
+      "imageUrl": "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?w=500&auto=format&fit=crop&q=80"
+    }
+  ],
+  "financials": [
+    {
+      "id": "fin-001",
+      "type": "despesa",
+      "category": "fornecedor_pecas",
+      "description": "Confecção Mar & Sol - Lote Biquínis Canelados UV50+",
+      "amount": 1950,
+      "dueDate": "2026-09-28",
+      "status": "pendente",
+      "createdAt": "2026-09-10"
+    },
+    {
+      "id": "fin-002",
+      "type": "despesa",
+      "category": "embalagens",
+      "description": "Gráfica Boutique - 500 Sacolas Kraft personalizadas + Papel de Seda",
+      "amount": 680,
+      "dueDate": "2026-09-25",
+      "status": "pendente",
+      "createdAt": "2026-09-15"
+    },
+    {
+      "id": "fin-003",
+      "type": "despesa",
+      "category": "aluguel_loja",
+      "description": "Aluguel Showroom & Espaço Físico",
+      "amount": 2200,
+      "dueDate": "2026-09-10",
+      "paymentDate": "2026-09-09",
+      "status": "pago",
+      "paymentMethod": "pix",
+      "createdAt": "2026-09-01"
+    },
+    {
+      "id": "fin-004",
+      "type": "despesa",
+      "category": "energia_agua_internet",
+      "description": "Luz comercial & Fibra Óptica Loja",
+      "amount": 345.5,
+      "dueDate": "2026-09-15",
+      "paymentDate": "2026-09-14",
+      "status": "pago",
+      "paymentMethod": "boleto",
+      "createdAt": "2026-09-02"
+    },
+    {
+      "id": "fin-005",
+      "type": "despesa",
+      "category": "marketing_anuncios",
+      "description": "Campanha Tráfego Pago Instagram (Coleção Verão & Lingerie)",
+      "amount": 500,
+      "dueDate": "2026-09-20",
+      "status": "vencido",
+      "createdAt": "2026-09-05"
+    },
+    {
+      "id": "fin-006",
+      "type": "receita",
+      "category": "venda_loja",
+      "description": "Venda Balcão #VND-1048 - Camila Rocha (Pix)",
+      "amount": 339.7,
+      "dueDate": "2026-09-22",
+      "paymentDate": "2026-09-22",
+      "status": "recebido",
+      "paymentMethod": "pix",
+      "createdAt": "2026-09-22"
+    },
+    {
+      "id": "fin-007",
+      "type": "receita",
+      "category": "venda_loja",
+      "description": "Recebimento Cartão Crédito (Venda #VND-1049 em 3x)",
+      "amount": 469.8,
+      "dueDate": "2026-09-30",
+      "status": "pendente",
+      "paymentMethod": "cartao_credito",
+      "createdAt": "2026-09-23"
+    },
+    {
+      "id": "fin-008",
+      "type": "receita",
+      "category": "venda_loja",
+      "description": "Venda Loja #VND-1045 - Helena Castro (Dinheiro)",
+      "amount": 198.8,
+      "dueDate": "2026-09-21",
+      "paymentDate": "2026-09-21",
+      "status": "recebido",
+      "paymentMethod": "dinheiro",
+      "createdAt": "2026-09-21"
+    },
+    {
+      "id": "fin-009",
+      "type": "receita",
+      "category": "venda_loja",
+      "description": "Recebimento Maquininha Cartão de Débito",
+      "amount": 620,
+      "dueDate": "2026-09-23",
+      "paymentDate": "2026-09-23",
+      "status": "recebido",
+      "paymentMethod": "cartao_debito",
+      "createdAt": "2026-09-23"
+    }
+  ],
+  "sales": [
+    {
+      "id": "sale-001",
+      "code": "VND-1047",
+      "customerName": "Mariana Lima",
+      "sellerName": "Camila Rocha",
+      "date": "2026-09-21T14:20:00Z",
+      "items": [
+        {
+          "productId": "prod-001",
+          "productName": "Biquíni Cortininha Ripple Solar",
+          "sku": "PRAIA-BIQ-2026-01",
+          "size": "M",
+          "quantity": 1,
+          "unitPrice": 109.9,
+          "unitCost": 45,
+          "total": 109.9
+        },
+        {
+          "productId": "prod-003",
+          "productName": "Saída de Praia Chemise Rendada",
+          "sku": "PRAIA-SAI-2026-03",
+          "size": "Único",
+          "quantity": 1,
+          "unitPrice": 129.9,
+          "unitCost": 55,
+          "total": 129.9
+        }
+      ],
+      "totalAmount": 239.8,
+      "totalCost": 100,
+      "profit": 139.8,
+      "paymentMethod": "pix"
+    },
+    {
+      "id": "sale-002",
+      "code": "VND-1048",
+      "customerName": "Isabela Fontes",
+      "sellerName": "Camila Rocha",
+      "date": "2026-09-22T16:45:00Z",
+      "items": [
+        {
+          "productId": "prod-004",
+          "productName": "Conjunto Lingerie Renda Sofia",
+          "sku": "INT-CONJ-2026-04",
+          "size": "M",
+          "quantity": 1,
+          "unitPrice": 98.9,
+          "unitCost": 41,
+          "total": 98.9
+        },
+        {
+          "productId": "prod-005",
+          "productName": "Robe Acetinado Noite de Seda",
+          "sku": "INT-ROBE-2026-05",
+          "size": "P/M",
+          "quantity": 1,
+          "unitPrice": 139.9,
+          "unitCost": 54,
+          "total": 139.9
+        },
+        {
+          "productId": "prod-006",
+          "productName": "Kit 3 Calcinhas Sem Costura Confort",
+          "sku": "INT-KIT-2026-06",
+          "size": "M",
+          "quantity": 1,
+          "unitPrice": 59.9,
+          "unitCost": 23.5,
+          "total": 59.9
+        }
+      ],
+      "totalAmount": 298.7,
+      "totalCost": 118.5,
+      "profit": 180.2,
+      "paymentMethod": "cartao_credito",
+      "installments": 3
+    },
+    {
+      "id": "sale-003",
+      "code": "VND-1049",
+      "customerName": "Carolina Meireles",
+      "sellerName": "Helena Castro",
+      "date": "2026-09-23T11:15:00Z",
+      "items": [
+        {
+          "productId": "prod-002",
+          "productName": "Maiô Sunset Cavado com Cinto",
+          "sku": "PRAIA-MAI-2026-02",
+          "size": "M",
+          "quantity": 2,
+          "unitPrice": 169.9,
+          "unitCost": 71,
+          "total": 339.8
+        },
+        {
+          "productId": "prod-003",
+          "productName": "Saída de Praia Chemise Rendada",
+          "sku": "PRAIA-SAI-2026-03",
+          "size": "Único",
+          "quantity": 1,
+          "unitPrice": 129.9,
+          "unitCost": 55,
+          "total": 129.9
+        }
+      ],
+      "totalAmount": 469.7,
+      "totalCost": 197,
+      "profit": 272.7,
+      "paymentMethod": "cartao_credito",
+      "installments": 3
+    }
+  ],
+  "goals": {
+    "day": {
+      "id": "goal-day",
+      "period": "dia",
+      "targetAmount": 800,
+      "currentAmount": 469.7,
+      "targetTicket": 180,
+      "currentTicket": 234.85,
+      "totalSalesCount": 2
+    },
+    "week": {
+      "id": "goal-week",
+      "period": "semana",
+      "targetAmount": 5000,
+      "currentAmount": 3680,
+      "targetTicket": 180,
+      "currentTicket": 193.68,
+      "totalSalesCount": 19
+    },
+    "month": {
+      "id": "goal-month",
+      "period": "mes",
+      "targetAmount": 22000,
+      "currentAmount": 16840,
+      "targetTicket": 185,
+      "currentTicket": 191.36,
+      "totalSalesCount": 88
+    }
+  },
+  "supabaseConfig": {
+    "url": "",
+    "anonKey": "",
+    "connected": false
+  }
+}
